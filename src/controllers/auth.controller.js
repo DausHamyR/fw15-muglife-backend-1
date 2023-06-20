@@ -73,6 +73,10 @@ exports.forgotPassword = async (req, res) => {
         if (!user) {
             throw Error("wrong_email")
         }
+        const cekForgotRequest = await forgotRequestModel.findOneByEmail(email)
+        if (cekForgotRequest) {
+            throw Error("auth_forgot_already_requested")
+        }
         const forgot = await forgotRequestModel.insert(email)
         if (!forgot) {
             throw Error("forgot_failed")
@@ -80,7 +84,7 @@ exports.forgotPassword = async (req, res) => {
         return res.json({
             success: true,
             message: "Forgot password success!",
-            results: user
+            results: forgot
         })
     } catch (err) {
         return errorHandler(res, err)

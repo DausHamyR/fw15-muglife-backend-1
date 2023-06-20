@@ -1,12 +1,30 @@
 const errorHandler = (response, err) => {
+    if(err?.message === "fileformat_error") {
+        return response.status(400).json({
+            success: false,
+            message: "fileformat error"
+        })
+    }
+    if(err?.message === "wrong_password") {
+        return response.status(400).json({
+            success: false,
+            message: "Wrong Password"
+        })
+    }
     if(err?.message === "wrong_email") {
         return response.status(404).json({
             success: false,
             message: "Wrong Email"
         })
     }
+    if(err?.message.includes("auth_forgot_already_requested")) {
+        return response.status(409).json({
+            success: false,
+            message: "auth forgot already requested"
+        })
+    }
     if(err?.message.includes("users_email_key")) {
-        return response.status(404).json({
+        return response.status(409).json({
             success: false,
             message: "Error: e-mail already in use"
         })

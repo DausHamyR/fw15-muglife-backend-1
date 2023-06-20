@@ -14,6 +14,7 @@ exports.insert = async function(data){
     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`
 
     const values = [data.picture, data.code, data.name, data.percentage, data.maxAmount, data.descriptions, data.expiredIn]
+    console.log(values)
     const {rows} = await db.query(query, values)
     return rows[0]
 }
@@ -38,6 +39,7 @@ exports.findAll = async function (params) {
     SELECT
         "id",
         "picture",
+        "code",
         "name",
         "percentage",
         "maxAmount",
